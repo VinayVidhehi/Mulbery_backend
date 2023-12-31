@@ -29,24 +29,30 @@ connection.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
-// Example route
-// Example route
+function removeBackslashes(inputString) {
+  return inputString.replace(/\\/g, '');
+}
+
+
 app.get('/values', (req, res) => {
-    const { option, value } = req.query;
-    
-    const query = `SELECT * FROM example WHERE ${option} = ?`;
-  
-    connection.query(query, [value], (err, results) => {
-      if (err) {
-        console.error('Error executing query:', err);
-        res.status(500).send({ error: 'Internal Server Error' });
-        return;
-      }
-  
-      // Handle the results as needed
-      res.send({ message: `Received option: ${option} and ${value}`, results });
-    });
+  const { option, value } = req.query;
+  console.log("query is", value);
+  const newValue = removeBackslashes(value);
+  const query = `SELECT * FROM Mulbary_DB WHERE ${option} = '${newValue}';`;
+
+  console.log("query is", query);
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send({ error: 'Internal Server Error' });
+      return;
+    }
+
+    // Handle the results as needed
+    res.send({ message: `Received option: ${option} and ${value}`, results });
   });
+});
+
 
   // Example route
 app.post('/add-value', (req, res) => {
@@ -81,3 +87,4 @@ app.post('/add-value', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
