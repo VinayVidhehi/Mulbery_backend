@@ -38,7 +38,7 @@ app.get('/values', (req, res) => {
   const { option, value } = req.query;
   console.log("query is", value);
   const newValue = removeBackslashes(value);
-  const query = `SELECT * FROM Mulbary_DB WHERE ${option} = '${newValue}';`;
+  const query = `SELECT * FROM MULBERRY_DB WHERE ${option} = '${newValue}';`;
 
   console.log("query is", query);
   connection.query(query, (err, results) => {
